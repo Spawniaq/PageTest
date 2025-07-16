@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PageTest Matrix</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            font-family: "Courier New", monospace;
+            color: #0f0;
+        }
+
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #table-container {
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        table {
+            background: rgba(0, 0, 0, 0.75);
+            border-collapse: collapse;
+            width: 90%;
+            max-width: 800px;
+            margin: auto;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 0, 0.6);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        th, td {
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 255, 0, 0.5);
+            color: #0f0;
+            padding: 4px;
+        }
+
+        input[type="checkbox"] {
+            display: block;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 12px;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix"></canvas>
+    <div id="table-container">
+        <div>
+            <h1>Tabelle Front</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nr.</th>
+                        <th>Bezeichnung</th>
+                        <th>kg</th>
+                        <th>Sätze</th>
+                        <th>Wdh.</th>
+                        <th>Pause</th>
+                        <th>Einstellungen</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>1</td>
+                        <td>Beinpress liegend</td>
+                        <td>45</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Rückenlehne Loch: 3</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>2</td>
+                        <td>Beinstrecker sitzend</td>
+                        <td>20</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Hebelarm Loch: 11, Fußrolle Loch: 1</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>3</td>
+                        <td>Beinbeuger sitzend</td>
+                        <td>35</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Rückenlehne Loch: 4, Hebelarm Loch: 10, Fußrolle Loch: 8</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>4</td>
+                        <td>Rumänisches Kreuzheben</td>
+                        <td>20</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Mit der Kurzhantel</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>5</td>
+                        <td>Brustpresse an der Maschine</td>
+                        <td>25</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Sitz Loch: 3</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>6</td>
+                        <td>Lat ziehen</td>
+                        <td>35</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Sitz Loch: 5</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>7</td>
+                        <td>Butterfly</td>
+                        <td>35</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Sitz Loch: 3</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text"></td>
+                        <td>8</td>
+                        <td>Breites Rudern an der Maschine</td>
+                        <td>35</td>
+                        <td>3</td>
+                        <td>8–10</td>
+                        <td>120s</td>
+                        <td>Brust Polster: Loch 7, Sitz Loch: 2</td>
+                        <td><input type="checkbox"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const canvas = document.getElementById('matrix');
+            const ctx = canvas.getContext('2d');
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                columns = Math.floor(canvas.width / fontSize);
+                drops = Array.from({length: columns}, () => 1);
+            }
+
+            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%';
+            const fontSize = 16;
+            let columns = 0;
+            let drops = [];
+            resize();
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#0F0';
+                ctx.font = fontSize + 'px monospace';
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = characters[Math.floor(Math.random() * characters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            window.addEventListener('resize', resize);
+            function animate() {
+                draw();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+    </script>
+</body>
+</html>
