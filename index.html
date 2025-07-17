@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>PageTest Matrix</title>
     <style>
         html, body {
@@ -88,10 +89,38 @@
             margin-bottom: 12px;
             color: #0f0;
             text-shadow: 0 0 8px #0f0;
+
+    <title>PageTest Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #2d5be3;
+            color: white;
+            padding: 1rem;
+        }
+        main {
+            flex: 1;
+            padding: 2rem;
+        }
+        footer {
+            background-color: #eee;
+            padding: 1rem;
+            text-align: center;
+
         }
     </style>
 </head>
 <body>
+
     <canvas id="matrix"></canvas>
     <div id="overlay">
         <header><h1>PageTest</h1></header>
@@ -248,5 +277,17 @@
             animate();
         })();
     </script>
+
+    <header>
+        <h1>Welcome to PageTest</h1>
+    </header>
+    <main>
+        <p>This is a simple homepage for the <strong>PageTest</strong> project.</p>
+        <p>Feel free to customize this page by editing <code>index.html</code>.</p>
+    </main>
+    <footer>
+        &copy; 2023 PageTest
+    </footer>
+
 </body>
 </html>
