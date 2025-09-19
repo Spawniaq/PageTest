@@ -1,293 +1,2036 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>PageTest Matrix</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            background: #000;
-            overflow: hidden;
-            font-family: "Courier New", monospace;
-            color: #0f0;
-        }
-
-        canvas {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        #overlay {
-            position: relative;
-            z-index: 1;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #0f0;
-        }
-
-        header, footer {
-            text-align: center;
-            padding: 16px 0;
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        main h2 {
-            margin-bottom: 12px;
-            text-shadow: 0 0 8px #0f0;
-        }
-
-        table {
-            background: rgba(0, 0, 0, 0.75);
-            border-collapse: collapse;
-            width: 90%;
-            max-width: 800px;
-            margin: auto;
-            border-radius: 6px;
-            border: 1px solid rgba(0, 255, 0, 0.6);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
-        }
-
-        th, td {
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            padding: 8px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            box-sizing: border-box;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(0, 255, 0, 0.5);
-            color: #0f0;
-            padding: 4px;
-        }
-
-        input[type="checkbox"] {
-            display: block;
-            margin: auto;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 12px;
-            color: #0f0;
-            text-shadow: 0 0 8px #0f0;
-
-    <title>PageTest Home</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background-color: #2d5be3;
-            color: white;
-            padding: 1rem;
-        }
-        main {
-            flex: 1;
-            padding: 2rem;
-        }
-        footer {
-            background-color: #eee;
-            padding: 1rem;
-            text-align: center;
-
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember &amp; Ivy Tavern</title>
+<style>
+:root {
+  --bg: #0f0f16;
+  --bg-elevated: #171725;
+  --bg-muted: #1f1f30;
+  --text: #f2f3ff;
+  --text-muted: #b4b6d4;
+  --accent: #ff8a3d;
+  --accent-soft: rgba(255,138,61,0.18);
+  --success: #6dd58c;
+  --danger: #ff5f7a;
+  --shadow: rgba(0,0,0,0.35);
+  font-size: 16px;
+}
+body.theme-night {
+  --bg: #05060d;
+  --bg-elevated: #141425;
+  --bg-muted: #1b1b33;
+  --accent: #b980ff;
+  --accent-soft: rgba(185,128,255,0.2);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Tahoma", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+#app {
+  width: min(1200px, 100%);
+  background: var(--bg-elevated);
+  border-radius: 18px;
+  box-shadow: 0 18px 50px var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+header#topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(255,138,61,0.22), rgba(255,138,61,0));
+  padding: 14px 20px;
+  gap: 12px;
+}
+.top-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.metric {
+  background: rgba(15,15,22,0.65);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.metric strong {
+  font-weight: 600;
+}
+.top-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+button {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.15s ease, background 0.2s ease, border 0.2s ease;
+}
+button:hover {
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.12);
+}
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+button.primary {
+  background: var(--accent);
+  color: #1a0d05;
+  font-weight: 600;
+}
+button.primary:hover {
+  background: #ff9d5e;
+}
+button.ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+button.ghost:hover {
+  border-color: var(--accent);
+}
+button.pill {
+  border-radius: 999px;
+}
+button.disabled, button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+main.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 300px;
+  gap: 0;
+  flex: 1;
+  min-height: 600px;
+}
+aside, section {
+  padding: 16px 20px;
+}
+#queuePanel {
+  border-right: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-muted);
+}
+#queuePanel h2, #craftPanel h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+#queueList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.queue-card {
+  background: rgba(0,0,0,0.18);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.queue-name {
+  font-weight: 600;
+}
+.queue-meter {
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.queue-meter span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #ffcf66);
+}
+.queue-intent {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.queue-card button {
+  align-self: flex-start;
+}
+#centerPanel {
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tab-bar {
+  display: flex;
+  gap: 6px;
+  padding-bottom: 4px;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  border-radius: 999px;
+  padding: 8px 0;
+  font-weight: 600;
+  background: rgba(255,255,255,0.05);
+}
+.tab.active {
+  background: var(--accent);
+  color: #1a0d05;
+}
+.tab-content {
+  flex: 1;
+  background: rgba(0,0,0,0.18);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding: 18px;
+  overflow-y: auto;
+}
+#npcDisplay {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+#npcDisplay .npc-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+#npcDisplay .npc-tags {
+  display: flex;
+  gap: 6px;
+}
+.tag {
+  background: rgba(255,255,255,0.08);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+#dialoguePrompt {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+#dialogueChoices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#logFeed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.92rem;
+}
+.log-entry {
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid var(--accent);
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+#researchView, #staffView {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.upgrade-card, .staff-card {
+  background: rgba(0,0,0,0.25);
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.upgrade-card header, .staff-card header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+#craftPanel {
+  background: var(--bg-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.craft-section {
+  background: rgba(0,0,0,0.16);
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.craft-section h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+#ingredientButtons, #processButtons, #glassButtons, #garnishButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ingredient-btn, .process-btn, .glass-btn, .garnish-btn {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  position: relative;
+}
+.ingredient-btn span {
+  position: absolute;
+  bottom: -6px;
+  right: -2px;
+  font-size: 0.65rem;
+  background: rgba(15,15,22,0.9);
+  padding: 0 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+button.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+#timingMeter {
+  position: relative;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+#timingMeter .meter-zone {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  left: 30%;
+  background: rgba(109,213,140,0.35);
+}
+#timingCursor {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent);
+  transition: left 0.05s linear;
+}
+#mixSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+.craft-actions {
+  display: flex;
+  gap: 8px;
+}
+footer#footer {
+  padding: 12px 20px;
+  background: rgba(0,0,0,0.18);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,10,0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 50;
+}
+.overlay.hidden {
+  display: none;
+}
+.overlay-content {
+  width: min(800px, 100%);
+  background: var(--bg-elevated);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.5);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.overlay-content.small {
+  width: min(420px, 100%);
+}
+.overlay-content header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.codex-tabs {
+  display: flex;
+  gap: 8px;
+}
+.codex-body {
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 16px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.codex-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.codex-entry {
+  background: rgba(0,0,0,0.25);
+  border-radius: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.codex-entry h4 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+.codex-entry p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.settings-body label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.95rem;
+}
+.settings-body input, .settings-body select {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.hidden {
+  display: none !important;
+}
+@media (max-width: 1080px) {
+  main.layout {
+    grid-template-columns: 220px 1fr 260px;
+  }
+}
+@media (max-width: 900px) {
+  body {
+    padding: 0;
+  }
+  #app {
+    border-radius: 0;
+  }
+  main.layout {
+    grid-template-columns: 1fr;
+  }
+  #queuePanel, #craftPanel {
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+}
+</style>
 </head>
 <body>
-
-    <canvas id="matrix"></canvas>
-    <div id="overlay">
-        <header><h1>PageTest</h1></header>
-        <main>
-            <h2>Tabelle Front</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Nr.</th>
-                        <th>Bezeichnung</th>
-                        <th>kg</th>
-                        <th>Sätze</th>
-                        <th>Wdh.</th>
-                        <th>Pause</th>
-                        <th>Einstellungen</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>1</td>
-                        <td>Beinpress liegend</td>
-                        <td>45</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Rückenlehne Loch: 3</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>2</td>
-                        <td>Beinstrecker sitzend</td>
-                        <td>20</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Hebelarm Loch: 11, Fußrolle Loch: 1</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>3</td>
-                        <td>Beinbeuger sitzend</td>
-                        <td>35</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Rückenlehne Loch: 4, Hebelarm Loch: 10, Fußrolle Loch: 8</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>4</td>
-                        <td>Rumänisches Kreuzheben</td>
-                        <td>20</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Mit der Kurzhantel</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>5</td>
-                        <td>Brustpresse an der Maschine</td>
-                        <td>25</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Sitz Loch: 3</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>6</td>
-                        <td>Lat ziehen</td>
-                        <td>35</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Sitz Loch: 5</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>7</td>
-                        <td>Butterfly</td>
-                        <td>35</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Sitz Loch: 3</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text"></td>
-                        <td>8</td>
-                        <td>Breites Rudern an der Maschine</td>
-                        <td>35</td>
-                        <td>3</td>
-                        <td>8–10</td>
-                        <td>120s</td>
-                        <td>Brust Polster: Loch 7, Sitz Loch: 2</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </main>
-        <footer>&copy; 2025 PageTest</footer>
+<div id="app">
+  <header id="topBar">
+    <div class="top-left">
+      <span class="metric" id="timeDisplay">⏰ <strong>08:00</strong></span>
+      <span class="metric" id="coinDisplay">🪙 <strong>50</strong></span>
+      <span class="metric" id="repDisplay">⭐ <strong>0</strong></span>
+      <span class="metric" id="cleanDisplay">🧹 <strong>85</strong></span>
+      <span class="metric" id="noiseDisplay">🔊 <strong>25</strong></span>
+      <span class="metric" id="musicDisplay">🎵 Calm</span>
+      <span class="metric" id="lightDisplay">🕯️ Cozy</span>
     </div>
-    <script>
-        (function() {
-            const canvas = document.getElementById('matrix');
-            const ctx = canvas.getContext('2d');
-
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                columns = Math.floor(canvas.width / fontSize);
-                drops = Array.from({length: columns}, () => 1);
-            }
-
-            const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%';
-            const fontSize = 16;
-            let columns = 0;
-            let drops = [];
-            resize();
-
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#0F0';
-                ctx.font = fontSize + 'px monospace';
-
-                for (let i = 0; i < drops.length; i++) {
-                    const text = characters[Math.floor(Math.random() * characters.length)];
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
-            }
-
-            window.addEventListener('resize', resize);
-            function animate() {
-                draw();
-                requestAnimationFrame(animate);
-            }
-            animate();
-        })();
-    </script>
-
+    <div class="top-actions">
+      <button id="cleanAction" aria-label="Clean the tavern">🪣 Clean</button>
+      <button id="musicToggle" aria-label="Toggle music mood">🎵 Switch</button>
+      <button id="lightToggle" aria-label="Toggle lighting">🕯️ Switch</button>
+      <button id="settingsButton" aria-haspopup="dialog">⚙️ Settings</button>
+      <button id="codexButton" aria-haspopup="dialog">📚 Codex</button>
+      <button id="newGameButton">🔄 New Game</button>
+    </div>
+  </header>
+  <main class="layout">
+    <aside id="queuePanel">
+      <h2>Queue</h2>
+      <div id="queueList" role="list"></div>
+    </aside>
+    <section id="centerPanel">
+      <div class="tab-bar" role="tablist">
+        <button class="tab active" data-tab="dialogueView" role="tab" aria-selected="true">💬 Dialogue</button>
+        <button class="tab" data-tab="logView" role="tab" aria-selected="false">📜 Log</button>
+        <button class="tab" data-tab="researchView" role="tab" aria-selected="false">🧠 Research</button>
+        <button class="tab" data-tab="staffView" role="tab" aria-selected="false">🧑‍🍳 Staff</button>
+      </div>
+      <div id="dialogueView" class="tab-content" role="tabpanel">
+        <div id="npcDisplay" class="hidden"></div>
+        <div id="dialoguePrompt">Pick someone from the queue to begin.</div>
+        <div id="dialogueChoices"></div>
+      </div>
+      <div id="logView" class="tab-content hidden" role="tabpanel">
+        <ul id="logFeed"></ul>
+      </div>
+      <div id="researchView" class="tab-content hidden" role="tabpanel">
+        <div id="researchPoints">Research Points: <strong>0</strong></div>
+        <div id="upgradeList"></div>
+      </div>
+      <div id="staffView" class="tab-content hidden" role="tabpanel">
+        <div id="staffRoster"></div>
+        <div id="hireList"></div>
+      </div>
+    </section>
+    <aside id="craftPanel">
+      <h2>Crafting</h2>
+            <div id="dailySpecial" class="metric">&#x2728; Daily Special: None</div>
+      <section class="craft-section" aria-label="Ingredients">
+        <h3>Ingredients</h3>
+        <div id="ingredientButtons"></div>
+      </section>
+      <section class="craft-section" aria-label="Processes">
+        <h3>Processes</h3>
+        <div id="processButtons"></div>
+      </section>
+      <section class="craft-section" aria-label="Glassware">
+        <h3>Glassware</h3>
+        <div id="glassButtons"></div>
+      </section>
+      <section class="craft-section" aria-label="Temperature">
+        <h3>Temperature</h3>
+                <button id="tempToggle" class="pill">❄️ Cold</button>
+      </section>
+      <section class="craft-section" aria-label="Garnish">
+        <h3>Garnish</h3>
+        <div id="garnishButtons"></div>
+      </section>
+      <section class="craft-section" aria-label="Pour Timing">
+        <h3>Pour Timing</h3>
+        <div id="timingMeter">
+          <div class="meter-zone"></div>
+          <div id="timingCursor"></div>
+        </div>
+        <button id="pourButton" class="primary">Start Pour</button>
+      </section>
+      <section class="craft-section">
+        <h3>Current Mix</h3>
+        <div id="mixSummary">No drink in progress.</div>
+        <div class="craft-actions">
+          <button id="serveButton" class="primary" disabled>Serve</button>
+          <button id="clearMixButton" class="ghost">Clear</button>
+        </div>
+      </section>
+    </aside>
+  </main>
+  <footer id="footer">
+    <span id="hintTicker">Pro tip: Happy guests tip better when the tavern sparkles.</span>
+  </footer>
+</div>
+<div id="codexOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="codexTitle">
+  <div class="overlay-content">
     <header>
-        <h1>Welcome to PageTest</h1>
+      <h2 id="codexTitle">Tavern Codex</h2>
+      <input type="search" id="codexSearch" placeholder="Search entries..." aria-label="Search codex" />
+      <button id="closeCodex" class="ghost">Close</button>
     </header>
-    <main>
-        <p>This is a simple homepage for the <strong>PageTest</strong> project.</p>
-        <p>Feel free to customize this page by editing <code>index.html</code>.</p>
-    </main>
-    <footer>
-        &copy; 2023 PageTest
+    <nav class="codex-tabs" role="tablist">
+            <button class="tab active" data-tab="codex-npcs" role="tab" aria-selected="true">😀 NPCs</button>
+      <button class="tab"       <button class="tab" data-tab="codex-recipes" role="tab" aria-selected="false">🥤 Recipes</button>
+      <button class="tab"       <button class="tab" data-tab="codex-factions" role="tab" aria-selected="false">🛡️ Factions</button>
+      <button class="tab"       <button class="tab" data-tab="codex-events" role="tab" aria-selected="false">🎭 Events</button>
+      <button class="tab"       <button class="tab" data-tab="codex-upgrades" role="tab" aria-selected="false">🧱 Upgrades</button>
+    </nav>
+    <div class="codex-body">
+      <div id="codex-npcs" class="codex-panel"></div>
+      <div id="codex-recipes" class="codex-panel hidden"></div>
+      <div id="codex-factions" class="codex-panel hidden"></div>
+      <div id="codex-events" class="codex-panel hidden"></div>
+      <div id="codex-upgrades" class="codex-panel hidden"></div>
+    </div>
+  </div>
+</div>
+<div id="settingsModal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="overlay-content small">
+    <header>
+      <h2 id="settingsTitle">Settings</h2>
+    </header>
+    <div class="settings-body">
+      <label>🔊 Volume
+        <input type="range" id="volumeSlider" min="0" max="100" value="70" />
+      </label>
+      <label>🔠 Text Size
+        <input type="range" id="textSizeSlider" min="14" max="22" value="16" />
+      </label>
+      <label>🎨 Theme
+        <select id="themeSelect">
+          <option value="dark">Dark</option>
+          <option value="night">Night</option>
+        </select>
+      </label>
+    </div>
+    <footer class="settings-actions">
+      <button id="closeSettings" class="primary">Close</button>
     </footer>
+  </div>
+</div>
+<script>
+(() => {
+  "use strict";
 
+  const FLAVORS = ["sweet", "sour", "bitter", "salty", "smoky", "spicy", "herbal", "fruity"];
+  const STORAGE_KEY = "emberIvyTavernState_v1";
+  const DAY_START = 8 * 60;
+  const DAY_END = 24 * 60;
+  const TICK_MINUTES = 5;
+  const POUR_SPEED = 0.9;
+
+  const INGREDIENTS = [
+    { id: "barley", emoji: "🍺", name: "Malted Barley", flavors: { sweet: 1, bitter: 1 }, cost: 2, baseStock: 8 },
+    { id: "wine", emoji: "🍷", name: "Velvet Wine", flavors: { sweet: 2, fruity: 2 }, cost: 4, baseStock: 6 },
+    { id: "coffee", emoji: "☕", name: "Dark Brew", flavors: { bitter: 2, smoky: 1 }, cost: 3, baseStock: 5 },
+    { id: "cream", emoji: "🥛", name: "Cream Splash", flavors: { sweet: 1, sour: -1 }, cost: 1, baseStock: 8 },
+    { id: "water", emoji: "💧", name: "Spring Water", flavors: {}, cost: 1, baseStock: 12 },
+    { id: "tea", emoji: "🍵", name: "Jade Tea", flavors: { herbal: 2, bitter: 1 }, cost: 2, baseStock: 7 },
+    { id: "lemon", emoji: "🍋", name: "Sun Lemon", flavors: { sour: 3 }, cost: 1, baseStock: 6 },
+    { id: "honey", emoji: "🍯", name: "Wild Honey", flavors: { sweet: 3 }, cost: 2, baseStock: 5 },
+    { id: "cocoa", emoji: "🍫", name: "Cocoa Dust", flavors: { bitter: 2, sweet: 1 }, cost: 2, baseStock: 4 },
+    { id: "salt", emoji: "🧂", name: "Sea Salt", flavors: { salty: 3 }, cost: 1, baseStock: 4 },
+    { id: "pepper", emoji: "🌶️", name: "Fire Pepper", flavors: { spicy: 3 }, cost: 1, baseStock: 4 },
+    { id: "smoke", emoji: "🌫️", name: "Smoked Syrup", flavors: { smoky: 3 }, cost: 2, baseStock: 3 },
+    { id: "herb", emoji: "🌿", name: "Garden Herbs", flavors: { herbal: 2 }, cost: 1, baseStock: 5 },
+    { id: "apple", emoji: "🍎", name: "Orchard Cider", flavors: { fruity: 3, sweet: 1 }, cost: 2, baseStock: 5 }
+  ];
+
+  const PROCESS_OPTIONS = [
+    { id: "ice", emoji: "🧊", name: "Chill", description: "Sets drink cold; sharpens sour notes.", adjust: { temp: "cold" }, flavors: { sour: 1 }, noise: 2 },
+    { id: "fire", emoji: "🔥", name: "Warm", description: "Sets drink hot; deepens smoky notes.", adjust: { temp: "hot" }, flavors: { smoky: 1 }, noise: -2 },
+    { id: "infuse", emoji: "🧪", name: "Infuse", description: "Infuse herbs for nuance.", adjust: {}, flavors: { herbal: 1, sweet: 0.5 }, noise: 1 },
+    { id: "swirl", emoji: "🌀", name: "Aerate", description: "Adds flair, boosts fruity notes.", adjust: {}, flavors: { fruity: 1 }, noise: 3 }
+  ];
+
+  const GLASSWARE = [
+    { id: "flute", emoji: "🥂", name: "Fluted", bonus: { fruity: 1 }, style: "elegant" },
+    { id: "tumbler", emoji: "🥃", name: "Tumbler", bonus: { smoky: 1 }, style: "robust" },
+    { id: "martini", emoji: "🍸", name: "Martini", bonus: { sour: 1 }, style: "refined" },
+    { id: "tiki", emoji: "🍹", name: "Goblet", bonus: { sweet: 1 }, style: "festive" },
+    { id: "mug", emoji: "☕", name: "Mug", bonus: { spicy: 1 }, style: "cozy" }
+  ];
+
+  const GARNISHES = [
+    { id: "cherry", emoji: "🍒", name: "Cherry" },
+    { id: "lemonTwist", emoji: "🍋", name: "Lemon" },
+    { id: "herb", emoji: "🌿", name: "Herbs" },
+    { id: "orange", emoji: "🍊", name: "Orange" },
+    { id: "saltRim", emoji: "🧂", name: "Salt Rim" }
+  ];
+
+  const RECIPES = [
+    { id: "emberAle", name: "Ember Ale", emoji: "🍺", requires: ["barley", "honey", "herb"], targetFlavor: { sweet: 2, bitter: 1, herbal: 1 }, glass: "tumbler", garnish: "herb", temp: "cold" },
+    { id: "moonlitGrog", name: "Moonlit Grog", emoji: "🍹", requires: ["apple", "lemon", "honey"], targetFlavor: { sweet: 2, sour: 1, fruity: 2 }, glass: "tiki", garnish: "orange", temp: "cold" },
+    { id: "smolderShot", name: "Smolder Shot", emoji: "🥃", requires: ["coffee", "smoke", "pepper"], targetFlavor: { smoky: 3, spicy: 2, bitter: 1 }, glass: "tumbler", garnish: "saltRim", temp: "hot" },
+    { id: "sageSparkler", name: "Sage Sparkler", emoji: "🥂", requires: ["wine", "herb", "water"], targetFlavor: { herbal: 2, fruity: 2, sweet: 1 }, glass: "flute", garnish: "herb", temp: "cold" },
+    { id: "gildedMocha", name: "Gilded Mocha", emoji: "☕", requires: ["coffee", "cocoa", "cream"], targetFlavor: { bitter: 2, sweet: 2, smoky: 1 }, glass: "mug", garnish: "cherry", temp: "hot" },
+    { id: "emberChai", name: "Ember Chai", emoji: "☕", requires: ["tea", "honey", "pepper"], targetFlavor: { spicy: 2, sweet: 2, herbal: 2 }, glass: "mug", garnish: "herb", temp: "hot" }
+  ];
+
+  const EVENTS = [
+    { id: "bardNight", name: "Bard Night", description: "A traveling bard stirs the crowd. Tips +1, noise +15.", rule: day => day % 3 === 0 },
+    { id: "storm", name: "Storm Outside", description: "Rain drums the roof. Fewer guests, patience +10.", rule: day => day % 4 === 2 },
+    { id: "inspection", name: "Inspector Visit", description: "Guild inspector checks cleanliness. Keep it above 70!", rule: day => day % 5 === 1 }
+  ];
+
+  const FACTIONS = [
+    { id: "guild", name: "Guild of Sparks", description: "Artisan crafters drawn to inventive drinks." },
+    { id: "grove", name: "Verdant Grove", description: "Herbalists who adore calm ambiance and warm teas." },
+    { id: "veil", name: "Veiled Syndicate", description: "Information brokers that trade in smoky whispers." }
+  ];
+
+  const TRAITS = [
+    { id: "sweet", label: "Sweet Tooth", desc: "Loves honeyed drinks.", prefs: { sweet: 3 }, bonus: ctx => ctx.drink.flavors.sweet >= 3 ? 1 : 0 },
+    { id: "spicy", label: "Spice Hunter", desc: "Seeks heat in every cup.", prefs: { spicy: 2 }, bonus: ctx => ctx.drink.flavors.spicy >= 2 ? 1 : -1 },
+    { id: "smoky", label: "Smoky Skeptic", desc: "Dislikes smoky flavors.", prefs: { smoky: 0 }, bonus: ctx => ctx.drink.flavors.smoky > 1 ? -2 : 1 },
+    { id: "bitter", label: "Bitter Scholar", desc: "Finds comfort in bitter balance.", prefs: { bitter: 2 }, bonus: ctx => ctx.drink.flavors.bitter >= 2 ? 1 : 0 },
+    { id: "fruity", label: "Fruit Fan", desc: "Admires bright fruity notes.", prefs: { fruity: 2 }, bonus: ctx => ctx.drink.flavors.fruity >= 2 ? 1 : 0 }
+  ];
+
+  const STAFF_CANDIDATES = [
+    { id: "mira", name: "Mira", role: "Cleaner", priority: "clean", cost: 25, desc: "Keeps the floors gleaming." },
+    { id: "joren", name: "Joren", role: "Runner", priority: "serve", cost: 32, desc: "Helps with pour timing and guests." },
+    { id: "sil", name: "Sil", role: "Charm", priority: "charm", cost: 40, desc: "Boosts patience with witty banter." }
+  ];
+
+  const HINTS = [
+    "Serve within patience green zone for bonus tips.",
+    "Music and lighting tweak patience and noise instantly.",
+    "Research upgrades unlock stronger timing bonuses.",
+    "Inspect the codex to recall favorite drinks.",
+    "Cleaning before an inspection prevents fines." ];
+
+  const CONVERSATION_FLOW = {
+    greet: {
+      prompt: npc => `You greet ${npc.face} ${npc.name}. They seem ${npc.mood}.`,
+      options: [
+        { text: "Offer a warm welcome", patience: +6, mood: +1, info: "greet", next: "smalltalk", log: name => `${name} smiles at the welcome.` },
+        { text: "Compliment their outfit", patience: +4, mood: +2, reveal: "faction", next: "smalltalk", log: name => `${name} mentions their faction with pride.` },
+        { text: "Cut to the chase", patience: -6, mood: -1, next: "probe", log: name => `${name} folds arms, waiting.` }
+      ]
+    },
+    smalltalk: {
+      prompt: npc => `${npc.name} glances around the tavern.`,
+      options: [
+        { text: "Ask about their day", patience: +4, mood: +1, next: "probe", log: name => `${name} shares a rumor.`, rumor: true },
+        { text: "Comment on the ambiance", patience: +2, mood: +1, next: "probe", reveal: "ambience", log: name => `${name} hints at music preference.` },
+        { text: "Offer a menu", patience: -2, mood: 0, next: "probe", log: name => `${name} scans the menu quickly.` }
+      ]
+    },
+    probe: {
+      prompt: npc => `${npc.name} hints at what they want.`,
+      options: [
+        { text: "Ask for flavor hints", patience: 0, mood: +1, reveal: "flavor", next: "upsell", log: name => `${name} reveals flavor cravings.` },
+        { text: "Suggest today's special", patience: -2, mood: 0, special: true, next: "upsell", log: name => `${name} considers the special.` },
+        { text: "Offer signature recipe", patience: -4, mood: +1, recipe: true, next: "upsell", log: name => `${name} asks about ingredients.` }
+      ]
+    },
+    upsell: {
+      prompt: npc => `${npc.name} is ready to order.`,
+      options: [
+        { text: "Promise top quality", patience: +2, mood: +1, ready: true, log: name => `${name} expects perfection.` },
+        { text: "Mention limited stock", patience: 0, mood: 0, ready: true, log: name => `${name} nods eagerly.` },
+        { text: "Offer add-on garnish", patience: 0, mood: +1, ready: true, garnish: true, log: name => `${name} eyes the garnish selection.` }
+      ]
+    }
+  };
+
+  let state = null;
+  let tickTimer = null;
+  let pourFrame = null;
+  let hintTimer = null;
+  let lastSave = 0;
+
+  const elements = {};
+
+  function cacheElements() {
+    elements.timeDisplay = document.getElementById("timeDisplay");
+    elements.coinDisplay = document.getElementById("coinDisplay");
+    elements.repDisplay = document.getElementById("repDisplay");
+    elements.cleanDisplay = document.getElementById("cleanDisplay");
+    elements.noiseDisplay = document.getElementById("noiseDisplay");
+    elements.musicDisplay = document.getElementById("musicDisplay");
+    elements.lightDisplay = document.getElementById("lightDisplay");
+    elements.queueList = document.getElementById("queueList");
+    elements.dialoguePrompt = document.getElementById("dialoguePrompt");
+    elements.dialogueChoices = document.getElementById("dialogueChoices");
+    elements.npcDisplay = document.getElementById("npcDisplay");
+    elements.logFeed = document.getElementById("logFeed");
+    elements.researchPoints = document.getElementById("researchPoints");
+    elements.upgradeList = document.getElementById("upgradeList");
+    elements.staffRoster = document.getElementById("staffRoster");
+    elements.hireList = document.getElementById("hireList");
+    elements.ingredientButtons = document.getElementById("ingredientButtons");
+    elements.processButtons = document.getElementById("processButtons");
+    elements.glassButtons = document.getElementById("glassButtons");
+    elements.garnishButtons = document.getElementById("garnishButtons");
+    elements.tempToggle = document.getElementById("tempToggle");
+    elements.pourButton = document.getElementById("pourButton");
+    elements.timingCursor = document.getElementById("timingCursor");
+    elements.timingMeter = document.getElementById("timingMeter");
+    elements.mixSummary = document.getElementById("mixSummary");
+    elements.serveButton = document.getElementById("serveButton");
+    elements.clearMixButton = document.getElementById("clearMixButton");
+    elements.dailySpecial = document.getElementById("dailySpecial");
+    elements.cleanAction = document.getElementById("cleanAction");
+    elements.musicToggle = document.getElementById("musicToggle");
+    elements.lightToggle = document.getElementById("lightToggle");
+    elements.newGameButton = document.getElementById("newGameButton");
+    elements.codexButton = document.getElementById("codexButton");
+    elements.settingsButton = document.getElementById("settingsButton");
+    elements.codexOverlay = document.getElementById("codexOverlay");
+    elements.codexTabs = elements.codexOverlay.querySelectorAll(".tab");
+    elements.codexPanels = elements.codexOverlay.querySelectorAll(".codex-panel");
+    elements.codexSearch = document.getElementById("codexSearch");
+    elements.closeCodex = document.getElementById("closeCodex");
+    elements.settingsModal = document.getElementById("settingsModal");
+    elements.volumeSlider = document.getElementById("volumeSlider");
+    elements.textSizeSlider = document.getElementById("textSizeSlider");
+    elements.themeSelect = document.getElementById("themeSelect");
+    elements.closeSettings = document.getElementById("closeSettings");
+    elements.hintTicker = document.getElementById("hintTicker");
+    elements.tabButtons = document.querySelectorAll("#centerPanel .tab-bar .tab");
+  }
+
+  function createDefaultState() {
+    const stock = {};
+    INGREDIENTS.forEach(item => {
+      stock[item.id] = item.baseStock;
+    });
+    return {
+      version: 1,
+      day: 1,
+      time: DAY_START,
+      coins: 60,
+      rep: 0,
+      xp: 0,
+      todayServed: 0,
+      todaySpawned: 0,
+      ambiance: { clean: 85, noise: 25, music: "Calm", light: "Cozy" },
+      queue: [],
+      currentNPC: null,
+      conversation: { stage: "idle", history: [] },
+      mix: createEmptyMix(),
+      stock,
+      processes: [],
+      staff: [],
+      research: { points: 0, unlocked: [] },
+      upgrades: [],
+      codex: { npcs: {}, recipes: {}, factions: {}, events: [] },
+      log: [],
+      hintIndex: 0,
+      settings: { volume: 70, textSize: 16, theme: "dark" },
+      daily: { special: null, events: [], market: {} },
+      eventFlags: {},
+      factions: { guild: 0, grove: 0, veil: 0 },
+      lastNPCId: 0,
+      rumorPool: ["A caravan brings rare spices tomorrow.", "The inspector hates sticky floors.", "Bards pay double if charmed."]
+    };
+  }
+
+  function createEmptyMix() {
+    return {
+      ingredients: [],
+      processes: [],
+      glass: null,
+      temp: "cold",
+      garnish: null,
+      timing: { active: false, position: 0, direction: 1, accuracy: 0, locked: false }
+    };
+  }
+
+  function init() {
+    cacheElements();
+    bindUI();
+    loadGame();
+    startDay(true);
+    renderAll();
+    startLoop();
+    startHints();
+  }
+
+  function bindUI() {
+    elements.cleanAction.addEventListener("click", () => performClean());
+    elements.musicToggle.addEventListener("click", () => cycleMusic());
+    elements.lightToggle.addEventListener("click", () => cycleLight());
+    elements.newGameButton.addEventListener("click", () => {
+      if (confirm("Start a new game? Your current progress will be overwritten.")) {
+        resetGame();
+      }
+    });
+    elements.codexButton.addEventListener("click", () => showCodex(true));
+    elements.closeCodex.addEventListener("click", () => showCodex(false));
+    elements.codexTabs.forEach(tab => {
+      tab.addEventListener("click", () => switchCodexTab(tab.dataset.tab));
+    });
+    elements.codexSearch.addEventListener("input", () => renderCodexPanel());
+    elements.settingsButton.addEventListener("click", () => showSettings(true));
+    elements.closeSettings.addEventListener("click", () => showSettings(false));
+    elements.volumeSlider.addEventListener("input", e => {
+      state.settings.volume = Number(e.target.value);
+      scheduleSave();
+    });
+    elements.textSizeSlider.addEventListener("input", e => {
+      state.settings.textSize = Number(e.target.value);
+      document.documentElement.style.setProperty("font-size", `${state.settings.textSize}px`);
+      scheduleSave();
+    });
+    elements.themeSelect.addEventListener("change", e => {
+      state.settings.theme = e.target.value;
+      applyTheme();
+      scheduleSave();
+    });
+    elements.tempToggle.addEventListener("click", () => toggleTemp());
+    elements.pourButton.addEventListener("click", () => togglePour());
+    elements.serveButton.addEventListener("click", () => serveDrink());
+    elements.clearMixButton.addEventListener("click", () => clearMix());
+    elements.tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => switchCenterTab(btn));
+    });
+    document.getElementById("queuePanel").addEventListener("click", event => {
+      const card = event.target.closest("button[data-npc]");
+      if (card) {
+        const npcId = card.dataset.npc;
+        const npc = state.queue.find(n => String(n.id) === npcId);
+        if (npc) {
+          selectNPC(npc.id);
+        }
+      }
+    });
+  }
+
+  function resetGame() {
+    state = createDefaultState();
+    startDay(true);
+    renderAll();
+    scheduleSave(true);
+  }
+
+  function startDay(isFirst = false) {
+    if (!isFirst) {
+      state.day += 1;
+      state.time = DAY_START;
+      state.todayServed = 0;
+      state.todaySpawned = 0;
+      state.queue = [];
+      state.currentNPC = null;
+      state.conversation = { stage: "idle", history: [] };
+      state.mix = createEmptyMix();
+      restockIngredients();
+      applyDailyRent();
+    }
+    rollDailyEvents();
+    chooseDailySpecial();
+    applyTheme();
+    document.documentElement.style.setProperty("font-size", `${state.settings.textSize}px`);
+    addLog(`Day ${state.day} begins. Doors open at 08:00.`);
+    renderAll();
+  }
+
+  function applyDailyRent() {
+    const rent = 12 + state.day;
+    state.coins = Math.max(0, state.coins - rent);
+    addLog(`Paid daily rent of ${rent} coins.`);
+  }
+
+  function rollDailyEvents() {
+    state.daily.events = EVENTS.filter(evt => evt.rule(state.day));
+    state.daily.events.forEach(evt => {
+      recordCodexEvent(evt);
+      addLog(`Event today: ${evt.name} ï¿½ ${evt.description}`);
+    });
+  }
+
+  function chooseDailySpecial() {
+    if (state.daily.special) {
+      const existing = RECIPES.find(r => r.id === state.daily.special);
+      if (existing) {
+            elements.dailySpecial.textContent = `\u2728 Daily Special: ${existing.emoji} ${existing.name}`;
+        return;
+      }
+    }
+    const recipe = RECIPES[Math.floor(Math.random() * RECIPES.length)];
+    state.daily.special = recipe.id;
+        elements.dailySpecial.textContent = `\u2728 Daily Special: ${recipe.emoji} ${recipe.name}`;
+  }
+  function restockIngredients() {
+    const market = {};
+    INGREDIENTS.forEach(item => {
+      const variance = (Math.random() * 0.4) - 0.2;
+      const price = Math.max(1, Math.round(item.cost * (1 + variance)));
+      market[item.id] = price;
+      if (state.stock[item.id] < item.baseStock) {
+        const needed = item.baseStock - state.stock[item.id];
+        const purchasable = Math.min(needed, Math.floor(state.coins / price));
+        if (purchasable > 0) {
+          state.coins -= purchasable * price;
+          state.stock[item.id] += purchasable;
+        }
+      }
+    });
+    state.daily.market = market;
+    addLog("Restocked essentials based on nightly market prices.");
+  }
+
+  function startLoop() {
+    if (tickTimer) {
+      clearInterval(tickTimer);
+    }
+    tickTimer = setInterval(() => gameTick(), 2200);
+  }
+
+  function startHints() {
+    if (hintTimer) {
+      clearInterval(hintTimer);
+    }
+    hintTimer = setInterval(() => {
+      state.hintIndex = (state.hintIndex + 1) % HINTS.length;
+      elements.hintTicker.textContent = HINTS[state.hintIndex];
+    }, 12000);
+  }
+
+  function gameTick() {
+    advanceTime(TICK_MINUTES);
+    degradeAmbiance();
+    updateQueuePatience();
+    attemptSpawnNPC();
+    runStaffActions();
+    renderTopBar();
+    renderQueue();
+  }
+
+  function advanceTime(minutes) {
+    state.time += minutes;
+    if (state.time >= DAY_END) {
+      endDay();
+    }
+  }
+
+  function degradeAmbiance() {
+    const noiseDrift = Math.max(0, state.queue.length - 2) * 1.5;
+    const eventNoise = state.daily.events.some(evt => evt.id === "bardNight") ? 6 : 0;
+    state.ambiance.noise = clamp(state.ambiance.noise + noiseDrift + eventNoise - 4, 10, 95);
+    state.ambiance.clean = clamp(state.ambiance.clean - (state.queue.length * 0.5 + 0.6), 0, 100);
+  }
+
+  function updateQueuePatience() {
+    state.queue = state.queue.filter(npc => {
+      const patienceDrop = 4 + Math.max(0, (state.ambiance.noise - 60) / 10);
+      npc.patience = clamp(npc.patience - patienceDrop, 0, 100);
+      if (npc.patience <= 0) {
+        addLog(`${npc.face} ${npc.name} stormed out due to the wait.`);
+        adjustReputation(-1);
+        return false;
+      }
+      return true;
+    });
+  }
+
+  function runStaffActions() {
+    state.staff.forEach(member => {
+      if (member.cooldown && member.cooldown > 0) {
+        member.cooldown -= 1;
+        return;
+      }
+      if (member.priority === "clean") {
+        state.ambiance.clean = clamp(state.ambiance.clean + 6, 0, 100);
+        member.cooldown = 2;
+        addLog(`${member.name} tidies the floor. Cleanliness improves.`);
+      } else if (member.priority === "serve" && state.currentNPC && state.mix.timing.locked === false) {
+        state.mix.timing.accuracy = clamp(state.mix.timing.accuracy + 0.1, 0, 1);
+        addLog(`${member.name} steadies your pour for a bonus.`);
+        member.cooldown = 3;
+      } else if (member.priority === "charm" && state.currentNPC) {
+        state.currentNPC.patience = clamp(state.currentNPC.patience + 8, 0, 120);
+        addLog(`${member.name} keeps ${state.currentNPC.name} entertained.`);
+        member.cooldown = 3;
+      }
+    });
+  }
+
+  function attemptSpawnNPC() {
+    const minimum = 5;
+    const rushHour = state.time >= 18 * 60 && state.time <= 21 * 60;
+    const chance = rushHour ? 0.8 : 0.55;
+    const eventModifier = state.daily.events.some(evt => evt.id === "storm") ? -0.2 : 0;
+    if (state.queue.length < 4 && Math.random() < (chance + eventModifier)) {
+      if (state.todaySpawned < minimum || Math.random() < 0.65) {
+        spawnNPC();
+      }
+    }
+  }
+
+  function spawnNPC() {
+    const npc = generateNPC();
+    state.queue.push(npc);
+    state.todaySpawned += 1;
+    recordCodexNPC(npc);
+    addLog(`${npc.face} ${npc.name} (${npc.intent}) steps into the queue.`);
+  }
+
+  function generateNPC() {
+    state.lastNPCId += 1;
+    const faces = ["😀", "😎", "🧐", "😇", "🤠", "🥸", "😌", "🤓", "🧙", "🧝"];
+    const names = ["Ari", "Bryn", "Caro", "Dax", "Elowen", "Finn", "Galen", "Hera", "Isla", "Joss", "Kira", "Lio", "Mara", "Noor", "Orin", "Pax", "Quin", "Rhea", "Syl", "Tarin"];
+    const suffixes = ["the Bold", "of Mistvale", "Silver", "Quickstep"];
+    const intents = ["Order", "Rumor", "Quest", "Complaint", "Event"];
+    const face = faces[Math.floor(Math.random() * faces.length)];
+    const name = names[Math.floor(Math.random() * names.length)] + (Math.random() < 0.2 ? " " + suffixes[Math.floor(Math.random() * suffixes.length)] : "");
+    const intent = intents[Math.floor(Math.random() * intents.length)];
+    const faction = FACTIONS[Math.floor(Math.random() * FACTIONS.length)];
+    const trait = TRAITS[Math.floor(Math.random() * TRAITS.length)];
+    const patienceBase = 65 + Math.random() * 25;
+    const moods = ["eager", "tired", "curious", "tense", "cheerful"];
+    const mood = moods[Math.floor(Math.random() * moods.length)];
+    const tempPref = Math.random() > 0.5 ? "hot" : "cold";
+    const prefGlass = GLASSWARE[Math.floor(Math.random() * GLASSWARE.length)].id;
+    const prefGarnish = GARNISHES[Math.floor(Math.random() * GARNISHES.length)].id;
+    const budget = 8 + Math.floor(Math.random() * 12);
+    const prefs = {};
+    FLAVORS.forEach(flavor => {
+      prefs[flavor] = Math.max(0, Math.round(Math.random() * (trait.prefs[flavor] ? 2 : 1.5)));
+      if (trait.prefs[flavor]) {
+        prefs[flavor] = Math.max(prefs[flavor], trait.prefs[flavor]);
+      }
+    });
+    return {
+      id: state.lastNPCId,
+      face,
+      name,
+      faction: faction.id,
+      factionName: faction.name,
+      intent,
+      patience: patienceBase,
+      maxPatience: patienceBase,
+      trait: trait.id,
+      traitLabel: trait.label,
+      mood,
+      prefs,
+      tempPref,
+      glassPref: prefGlass,
+      garnishPref: prefGarnish,
+      budget,
+      memory: { visits: 1, lastSatisfaction: null, favorite: null },
+      info: { flavor: false, faction: false, rumor: false },
+      ready: false
+    };
+  }
+
+  function selectNPC(id) {
+    const index = state.queue.findIndex(npc => npc.id === id);
+    if (index === -1) return;
+    const npc = state.queue.splice(index, 1)[0];
+    state.currentNPC = npc;
+    state.conversation = { stage: "greet", history: [] };
+    elements.npcDisplay.classList.remove("hidden");
+    addLog(`${npc.face} ${npc.name} takes a seat at the bar.`);
+    renderDialogue();
+    renderQueue();
+  }
+
+  function renderAll() {
+    renderTopBar();
+    renderQueue();
+    renderDialogue();
+    renderLog();
+    renderCrafting();
+    renderResearch();
+    renderStaff();
+    renderCodexPanel();
+  }
+
+  function renderTopBar() {
+        elements.timeDisplay.innerHTML = `⏰ <strong>${formatTime(state.time)}</strong>`;
+        elements.coinDisplay.innerHTML = `🪙 <strong>${state.coins}</strong>`;
+    elements.repDisplay.innerHTML = `? <strong>${state.rep}</strong>`;
+        elements.cleanDisplay.innerHTML = `🧹 <strong>${Math.round(state.ambiance.clean)}</strong>`;
+        elements.noiseDisplay.innerHTML = `🔊 <strong>${Math.round(state.ambiance.noise)}</strong>`;
+        elements.musicDisplay.textContent = `🎵 ${state.ambiance.music}`;
+        elements.lightDisplay.textContent = `🕯️ ${state.ambiance.light}`;
+  }
+
+  function renderQueue() {
+    elements.queueList.innerHTML = "";
+    state.queue.forEach(npc => {
+      const card = document.createElement("div");
+      card.className = "queue-card";
+      const patiencePercent = Math.round((npc.patience / npc.maxPatience) * 100);
+      card.innerHTML = `
+        <div class="queue-header">
+          <span class="queue-name">${npc.face} ${npc.name}</span>
+          <span>${npc.budget}🪙</span>
+        </div>
+        <div class="queue-meter"><span style="width:${patiencePercent}%"></span></div>
+        <div class="queue-intent">${npc.intent} • ${npc.traitLabel}</div>
+        <button data-npc="${npc.id}" class="pill">Invite</button>
+      `;
+      elements.queueList.appendChild(card);
+    });
+    if (!state.queue.length) {
+      const empty = document.createElement("div");
+      empty.className = "queue-card";
+      empty.textContent = "No guests waiting.";
+      elements.queueList.appendChild(empty);
+    }
+  }
+
+  function renderDialogue() {
+    if (!state.currentNPC) {
+      elements.npcDisplay.innerHTML = "";
+      elements.npcDisplay.classList.add("hidden");
+      elements.dialoguePrompt.textContent = "Pick someone from the queue to begin.";
+      elements.dialogueChoices.innerHTML = "";
+      return;
+    }
+    const npc = state.currentNPC;
+    elements.npcDisplay.innerHTML = `
+      <div class="npc-name">${npc.face} ${npc.name}</div>
+      <div class="npc-tags">
+        <span class="tag">${npc.mood}</span>
+        <span class="tag">${npc.traitLabel}</span>
+        <span class="tag">${npc.factionName}</span>
+      </div>
+    `;
+    elements.npcDisplay.classList.remove("hidden");
+    const stage = CONVERSATION_FLOW[state.conversation.stage];
+    if (!stage) {
+      elements.dialoguePrompt.textContent = `${npc.name} awaits your crafted drink.`;
+      elements.dialogueChoices.innerHTML = "";
+      return;
+    }
+    elements.dialoguePrompt.textContent = stage.prompt(npc);
+    elements.dialogueChoices.innerHTML = "";
+    stage.options.forEach(option => {
+      const btn = document.createElement("button");
+      btn.textContent = option.text;
+      btn.addEventListener("click", () => handleConversationOption(option));
+      elements.dialogueChoices.appendChild(btn);
+    });
+  }
+
+  function handleConversationOption(option) {
+    const npc = state.currentNPC;
+    if (!npc) return;
+    npc.patience = clamp(npc.patience + (option.patience || 0), 0, 120);
+    npc.mood = adjustMood(npc.mood, option.mood || 0);
+    if (option.reveal === "faction") {
+      npc.info.faction = true;
+      addLog(`${npc.face} ${npc.name} whispers about the ${npc.factionName}.`);
+      recordCodexFaction(npc.faction);
+    }
+    if (option.reveal === "flavor") {
+      npc.info.flavor = true;
+      const fav = findTopFlavor(npc.prefs);
+      addLog(`${npc.face} ${npc.name} hints they crave ${fav}.`);
+    }
+    if (option.rumor) {
+      npc.info.rumor = true;
+      revealRumor();
+    }
+    if (option.special && state.daily.special) {
+      const recipe = RECIPES.find(r => r.id === state.daily.special);
+      addLog(`${npc.face} ${npc.name} seems interested in the ${recipe.name}.`);
+    }
+    if (option.recipe) {
+      const recipe = RECIPES[Math.floor(Math.random() * RECIPES.length)];
+      addLog(`${npc.face} ${npc.name} recalls loving ${recipe.name}.`);
+      recordCodexRecipe(recipe);
+    }
+    if (option.garnish) {
+      addLog(`${npc.face} ${npc.name} mentions they adore garnishes.`);
+    }
+    if (option.ready) {
+      npc.ready = true;
+      state.conversation.stage = "ready";
+      elements.dialogueChoices.innerHTML = "";
+      elements.dialoguePrompt.textContent = `${npc.name} is ready for their drink.`;
+      renderCrafting();
+    } else if (option.next) {
+      state.conversation.stage = option.next;
+      state.conversation.history.push(option.text);
+      renderDialogue();
+    }
+    if (option.log) {
+      addLog(option.log(npc.name));
+    }
+  }
+
+  function adjustMood(current, delta) {
+    const moods = ["furious", "irritated", "neutral", "pleased", "delighted"];
+    let index = moods.indexOf(current);
+    if (index === -1) index = 2;
+    index = clamp(index + delta, 0, moods.length - 1);
+    return moods[index];
+  }
+
+  function findTopFlavor(prefs) {
+    let best = null;
+    let bestVal = -1;
+    Object.entries(prefs).forEach(([flavor, value]) => {
+      if (value > bestVal) {
+        bestVal = value;
+        best = flavor;
+      }
+    });
+    return best;
+  }
+
+  function revealRumor() {
+    if (!state.rumorPool.length) return;
+    const rumor = state.rumorPool.shift();
+    addLog(`Rumor: ${rumor}`);
+  }
+
+  function renderLog() {
+    elements.logFeed.innerHTML = "";
+    state.log.slice(-80).reverse().forEach(entry => {
+      const li = document.createElement("li");
+      li.className = "log-entry";
+      li.textContent = entry;
+      elements.logFeed.appendChild(li);
+    });
+  }
+
+  function renderCrafting() {
+    renderIngredients();
+    renderProcesses();
+    renderGlassware();
+    renderGarnishes();
+    renderMixSummary();
+    updateServeState();
+  }
+
+  function renderIngredients() {
+    elements.ingredientButtons.innerHTML = "";
+    INGREDIENTS.forEach(item => {
+      const btn = document.createElement("button");
+      btn.className = "ingredient-btn";
+      btn.innerHTML = `${item.emoji}<span>${state.stock[item.id]}</span>`;
+      btn.title = `${item.name} (${describeFlavors(item.flavors)})`;
+      if (state.stock[item.id] <= 0) {
+        btn.disabled = true;
+      }
+      btn.addEventListener("click", () => addIngredient(item.id));
+      elements.ingredientButtons.appendChild(btn);
+    });
+  }
+
+  function describeFlavors(flavors) {
+    const list = [];
+    Object.entries(flavors).forEach(([flavor, value]) => {
+      if (value !== 0) {
+        list.push(`${flavor}+${value}`);
+      }
+    });
+    return list.join(", ") || "Neutral";
+  }
+
+  function addIngredient(id) {
+    const ingredient = INGREDIENTS.find(item => item.id === id);
+    if (!ingredient || state.stock[id] <= 0) return;
+    if (state.mix.ingredients.length >= 5) {
+      addLog("Too many ingredients ï¿½ finish or clear the mix.");
+      return;
+    }
+    state.mix.ingredients.push(id);
+    state.stock[id] -= 1;
+    addLog(`Added ${ingredient.emoji} ${ingredient.name} to the shaker.`);
+    renderCrafting();
+  }
+
+  function renderProcesses() {
+    elements.processButtons.innerHTML = "";
+    PROCESS_OPTIONS.forEach(proc => {
+      const btn = document.createElement("button");
+      btn.className = "process-btn";
+      btn.textContent = proc.emoji;
+      btn.title = `${proc.name} ï¿½ ${proc.description}`;
+      if (state.mix.processes.includes(proc.id)) btn.classList.add("active");
+      btn.addEventListener("click", () => toggleProcess(proc.id));
+      elements.processButtons.appendChild(btn);
+    });
+  }
+
+  function toggleProcess(id) {
+    const index = state.mix.processes.indexOf(id);
+    const proc = findProcess(id);
+    if (index >= 0) {
+      state.mix.processes.splice(index, 1);
+      if (proc && proc.noise) {
+        state.ambiance.noise = clamp(state.ambiance.noise - proc.noise, 0, 100);
+      }
+    } else {
+      state.mix.processes.push(id);
+      if (proc && proc.noise) {
+        state.ambiance.noise = clamp(state.ambiance.noise + proc.noise, 0, 100);
+      }
+    }
+    const tempOverride = state.mix.processes.map(pid => findProcess(pid)).find(p => p && p.adjust && p.adjust.temp);
+    if (tempOverride && tempOverride.adjust.temp) {
+      state.mix.temp = tempOverride.adjust.temp;
+      elements.tempToggle.textContent = state.mix.temp === "cold" ? "?? Cold" : "?? Hot";
+    }
+    renderCrafting();
+  }
+
+  function renderGlassware() {
+    elements.glassButtons.innerHTML = "";
+    GLASSWARE.forEach(glass => {
+      const btn = document.createElement("button");
+      btn.className = "glass-btn";
+      btn.textContent = glass.emoji;
+      btn.title = `${glass.name} glass`;
+      if (state.mix.glass === glass.id) btn.classList.add("active");
+      btn.addEventListener("click", () => selectGlass(glass.id));
+      elements.glassButtons.appendChild(btn);
+    });
+  }
+
+  function selectGlass(id) {
+    state.mix.glass = id;
+    renderCrafting();
+  }
+
+  function renderGarnishes() {
+    elements.garnishButtons.innerHTML = "";
+    GARNISHES.forEach(item => {
+      const btn = document.createElement("button");
+      btn.className = "garnish-btn";
+      btn.textContent = item.emoji;
+      btn.title = `${item.name}`;
+      if (state.mix.garnish === item.id) btn.classList.add("active");
+      btn.addEventListener("click", () => selectGarnish(item.id));
+      elements.garnishButtons.appendChild(btn);
+    });
+  }
+
+  function selectGarnish(id) {
+    state.mix.garnish = state.mix.garnish === id ? null : id;
+    renderCrafting();
+  }
+
+  function toggleTemp() {
+    state.mix.temp = state.mix.temp === "cold" ? "hot" : "cold";
+    elements.tempToggle.textContent = state.mix.temp === "cold" ? "?? Cold" : "?? Hot";
+    renderMixSummary();
+  }
+
+  function togglePour() {
+    if (state.mix.timing.active) {
+      lockPour();
+    } else {
+      startPour();
+    }
+  }
+
+  function startPour() {
+    state.mix.timing.active = true;
+    state.mix.timing.locked = false;
+    state.mix.timing.direction = 1;
+    state.mix.timing.position = 0;
+    state.mix.timing.accuracy = 0;
+    elements.pourButton.textContent = "Stop Pour";
+    cancelAnimationFrame(pourFrame);
+    animatePour();
+  }
+
+  function animatePour() {
+    if (!state.mix.timing.active) return;
+    const timing = state.mix.timing;
+    timing.position += 0.01 * POUR_SPEED * timing.direction;
+    if (timing.position >= 1) {
+      timing.position = 1;
+      timing.direction = -1;
+    }
+    if (timing.position <= 0) {
+      timing.position = 0;
+      timing.direction = 1;
+    }
+    elements.timingCursor.style.left = `${timing.position * 100}%`;
+    pourFrame = requestAnimationFrame(animatePour);
+  }
+
+  function lockPour() {
+    state.mix.timing.active = false;
+    cancelAnimationFrame(pourFrame);
+    const distance = Math.abs(state.mix.timing.position - 0.5);
+    state.mix.timing.accuracy = clamp(1 - distance * 2, 0, 1);
+    state.mix.timing.locked = true;
+    const percent = Math.round(state.mix.timing.accuracy * 100);
+    addLog(`Pour locked in at ${percent}% accuracy.`);
+    elements.pourButton.textContent = "Redo Pour";
+    elements.timingCursor.style.left = `${state.mix.timing.position * 100}%`;
+    updateServeState();
+  }
+
+  function renderMixSummary() {
+    if (!state.mix.ingredients.length) {
+      elements.mixSummary.textContent = "No drink in progress.";
+      return;
+    }
+    const profile = summarizeMix();
+    const lines = [];
+    lines.push(`Ingredients: ${state.mix.ingredients.map(id => findIngredient(id).emoji).join(" ")}`);
+    if (state.mix.processes.length) {
+      lines.push(`Processes: ${state.mix.processes.map(id => findProcess(id).emoji).join(" ")}`);
+    }
+    lines.push(`Temp: ${profile.temp === "cold" ? "❄️ Cold" : "🔥 Hot"}`);
+    if (state.mix.glass) {
+      const glass = GLASSWARE.find(g => g.id === state.mix.glass);
+      lines.push(`Glass: ${glass.emoji} ${glass.name}`);
+    }
+    if (state.mix.garnish) {
+      const garnish = GARNISHES.find(g => g.id === state.mix.garnish);
+      lines.push(`Garnish: ${garnish.emoji} ${garnish.name}`);
+    }
+    lines.push(`Flavor profile: ${describeFlavorProfile(profile.flavors)}`);
+    if (state.mix.timing.locked) {
+      lines.push(`Pour accuracy: ${Math.round(state.mix.timing.accuracy * 100)}%`);
+    }
+    elements.mixSummary.innerHTML = lines.join("<br>");
+  }
+  function summarizeMix() {
+    const flavors = {};
+    FLAVORS.forEach(key => flavors[key] = 0);
+    let cost = 0;
+    let temp = state.mix.temp;
+    state.mix.ingredients.forEach(id => {
+      const ingredient = findIngredient(id);
+      cost += findMarketPrice(id);
+      Object.entries(ingredient.flavors).forEach(([key, val]) => {
+        flavors[key] += val;
+      });
+    });
+    state.mix.processes.forEach(id => {
+      const proc = findProcess(id);
+      if (!proc) return;
+      Object.entries(proc.flavors || {}).forEach(([key, val]) => {
+        flavors[key] += val;
+      });
+      if (proc.adjust && proc.adjust.temp) {
+        temp = proc.adjust.temp;
+      }
+    });
+    if (state.mix.glass) {
+      const bonus = GLASSWARE.find(g => g.id === state.mix.glass).bonus;
+      Object.entries(bonus).forEach(([key, val]) => {
+        flavors[key] += val;
+      });
+    }
+    return { flavors, cost, temp };
+  }
+  function describeFlavorProfile(flavors) {
+    const entries = Object.entries(flavors).filter(([, value]) => value !== 0).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
+    if (!entries.length) return "Balanced";
+    return entries.map(([key, val]) => `${key} ${val > 0 ? "+" + val : val}`).join(", ");
+  }
+
+  function updateServeState() {
+    const ready = state.currentNPC && state.currentNPC.ready && state.mix.ingredients.length && state.mix.glass && state.mix.timing.locked;
+    elements.serveButton.disabled = !ready;
+  }
+
+  function clearMix(respectStock = true) {
+    if (respectStock) {
+      state.mix.ingredients.forEach(id => {
+        state.stock[id] += 1;
+      });
+    }
+    state.mix = createEmptyMix();
+    elements.pourButton.textContent = "Start Pour";
+    renderCrafting();
+  }
+
+  function serveDrink() {
+    if (!state.currentNPC) return;
+    const npc = state.currentNPC;
+    const drink = buildDrink();
+    const result = calculateSatisfaction(npc, drink);
+    const payment = Math.min(npc.budget, Math.round(drink.cost * (1.2 + result.quality / 12)));
+    const tip = calculateTip(result.satisfaction);
+    state.coins += payment + tip;
+    if (result.satisfaction >= 6) {
+      adjustReputation(1);
+      state.research.points += result.researchGain;
+      npc.memory.favorite = drink.signature;
+      if (state.codex.npcs[npc.id]) {
+        state.codex.npcs[npc.id].favorite = npc.memory.favorite;
+      }
+    } else if (result.satisfaction <= 3) {
+      adjustReputation(-1);
+    }
+    npc.memory.lastSatisfaction = result.satisfaction;
+    recordCodexRecipe(drink.recipeMatch);
+    state.todayServed += 1;
+    addLog(`${npc.face} ${npc.name} paid ${payment}🪙 and tipped ${tip}🪙. Satisfaction ${result.satisfaction.toFixed(1)}/10.`);
+    addLog(result.details);
+    if (state.daily.events.some(evt => evt.id === "inspection")) {
+      if (state.ambiance.clean < 70) {
+        state.coins = Math.max(0, state.coins - 8);
+        addLog("The inspector fines you 8 coins for grime!");
+      } else {
+        addLog("Inspector nods approvingly ï¿½ no fines today.");
+      }
+    }
+    state.currentNPC = null;
+    state.conversation = { stage: "idle", history: [] };
+    clearMix(false);
+    renderAll();
+    scheduleSave();
+  }
+
+  function buildDrink() {
+    const profile = summarizeMix();
+    const accuracyBonus = state.mix.timing.accuracy;
+    const recipeMatch = findMatchingRecipe();
+    const signature = state.mix.ingredients.map(id => findIngredient(id).emoji).join("") + (state.mix.glass ? GLASSWARE.find(g => g.id === state.mix.glass).emoji : "");
+    return {
+      flavors: profile.flavors,
+      cost: profile.cost,
+      temp: profile.temp,
+      glass: state.mix.glass,
+      garnish: state.mix.garnish,
+      accuracyBonus,
+      recipeMatch,
+      signature
+    };
+  }
+
+  function findMatchingRecipe() {
+    const ingSet = new Set(state.mix.ingredients);
+    return RECIPES.find(recipe => recipe.requires.every(req => ingSet.has(req)));
+  }
+
+  function calculateSatisfaction(npc, drink) {
+    const flavorScore = evaluateFlavorMatch(npc, drink.flavors);
+    const tempMatch = npc.tempPref === drink.temp ? 1 : -1;
+    const glassMatch = npc.glassPref === drink.glass ? 1 : 0;
+    const garnishMatch = npc.garnishPref && npc.garnishPref === drink.garnish ? 1 : 0;
+    const waitPenalty = (npc.maxPatience - npc.patience) / 25;
+    const noisePenalty = Math.max(0, (state.ambiance.noise - 60) / 20);
+    const dirtPenalty = Math.max(0, (70 - state.ambiance.clean) / 25);
+    const craftBonus = Math.round(drink.accuracyBonus * 3);
+    const traitBonus = applyTraitBonus(npc, drink);
+    let satisfaction = 3 + 2 * flavorScore + tempMatch + glassMatch + garnishMatch + craftBonus - waitPenalty - noisePenalty - dirtPenalty + traitBonus;
+    if (state.research.unlocked.includes("pourGauge") && drink.accuracyBonus >= 0.7) {
+      satisfaction += 1;
+    }
+    if (state.research.unlocked.includes("herbalLore") && drink.flavors.herbal >= 2) {
+      satisfaction += 0.5;
+    }
+    satisfaction = clamp(satisfaction, 0, 10);
+    const quality = satisfaction;
+    const details = `Flavor:${flavorScore.toFixed(2)} Temp:${tempMatch} Glass:${glassMatch} Pour:${craftBonus} Ambiance:-${(waitPenalty + noisePenalty + dirtPenalty).toFixed(1)} Trait:${traitBonus}`;
+    const researchGain = satisfaction >= 7 ? 1 : 0;
+    if (state.research.unlocked.includes("guildRelations") && npc.faction === "guild" && satisfaction >= 6) {
+      state.research.points += 1;
+    }
+    if (state.research.unlocked.includes("herbalLore") && drink.flavors.herbal >= 2) {
+      state.factions.grove += 1;
+    }
+    return { satisfaction, quality, details, researchGain };
+  }
+
+  function evaluateFlavorMatch(npc, flavors) {
+    let totalDiff = 0;
+    let keys = 0;
+    Object.entries(npc.prefs).forEach(([flavor, pref]) => {
+      if (pref <= 0) return;
+      keys += 1;
+      const diff = Math.abs((flavors[flavor] || 0) - pref);
+      totalDiff += diff;
+    });
+    if (!keys) return 0;
+    const avgDiff = totalDiff / keys;
+    const normalized = clamp(2 - avgDiff, 0, 2);
+    return normalized;
+  }
+
+  function applyTraitBonus(npc, drink) {
+    const trait = TRAITS.find(t => t.id === npc.trait);
+    if (!trait) return 0;
+    return trait.bonus({ npc, drink }) || 0;
+  }
+
+  function calculateTip(satisfaction) {
+    const ambianceBonus = state.ambiance.clean > 80 ? 2 : state.ambiance.clean > 65 ? 1 : 0;
+    const eventBonus = state.daily.events.some(evt => evt.id === "bardNight") ? 1 : 0;
+    const tip = Math.floor(satisfaction / 2) + ambianceBonus + eventBonus;
+    return clamp(tip, 0, 10);
+  }
+
+  function adjustReputation(amount) {
+    state.rep = Math.max(0, state.rep + amount);
+  }
+
+  function endDay() {
+    addLog(`Day ${state.day} closes. You served ${state.todayServed} guests.`);
+    state.time = DAY_START;
+    saveGame();
+    startDay();
+  }
+
+  function renderResearch() {
+    elements.researchPoints.innerHTML = `Research Points: <strong>${state.research.points}</strong>`;
+    elements.upgradeList.innerHTML = "";
+    getUpgrades().forEach(upg => {
+      const card = document.createElement("div");
+      card.className = "upgrade-card";
+      const owned = state.research.unlocked.includes(upg.id);
+      card.innerHTML = `
+        <div class="queue-header">
+          <span class="queue-name">${npc.face} ${npc.name}</span>
+          <span>${npc.budget}🪙</span>
+        </div>
+        <div class="queue-meter"><span style="width:${patiencePercent}%"></span></div>
+        <div class="queue-intent">${npc.intent} • ${npc.traitLabel}</div>
+        <button data-npc="${npc.id}" class="pill">Invite</button>
+      `;
+      if (!owned && canPurchaseUpgrade(upg)) {
+        const btn = document.createElement("button");
+        btn.textContent = "Research";
+        btn.addEventListener("click", () => unlockUpgrade(upg));
+        card.appendChild(btn);
+      }
+      elements.upgradeList.appendChild(card);
+    });
+  }
+
+  function getUpgrades() {
+    return [
+            { id: "pourGauge", name: "Crystal Pour Gauge", emoji: "🔍", description: "Pour accuracy grants +1 satisfaction when above 70%.", cost: 3 },
+            { id: "herbalLore", name: "Herbal Lore", emoji: "🌿", description: "Herbal drinks grant +1 tip and +1 faction with Verdant Grove.", cost: 4 },
+            { id: "guildRelations", name: "Guild Relations", emoji: "🤝", description: "Happy Guild guests add +1 Research point.", cost: 5 }
+    ];
+  }
+
+  function canPurchaseUpgrade(upg) {
+    return state.research.points >= upg.cost && !state.research.unlocked.includes(upg.id);
+  }
+
+  function unlockUpgrade(upg) {
+    state.research.points -= upg.cost;
+    state.research.unlocked.push(upg.id);
+    addLog(`Research unlocked: ${upg.name}`);
+    renderResearch();
+    scheduleSave();
+  }
+
+  function renderStaff() {
+    elements.staffRoster.innerHTML = "";
+    if (!state.staff.length) {
+      elements.staffRoster.innerHTML = "No staff hired.";
+    } else {
+      state.staff.forEach(member => {
+        const card = document.createElement("div");
+        card.className = "staff-card";
+        card.innerHTML = `
+        <div class="queue-header">
+          <span class="queue-name">${npc.face} ${npc.name}</span>
+          <span>${npc.budget}🪙</span>
+        </div>
+        <div class="queue-meter"><span style="width:${patiencePercent}%"></span></div>
+        <div class="queue-intent">${npc.intent} • ${npc.traitLabel}</div>
+        <button data-npc="${npc.id}" class="pill">Invite</button>
+      `;
+        elements.staffRoster.appendChild(card);
+      });
+    }
+    elements.hireList.innerHTML = "";
+    STAFF_CANDIDATES.forEach(candidate => {
+      if (state.staff.find(s => s.id === candidate.id)) return;
+      const card = document.createElement("div");
+      card.className = "staff-card";
+      card.innerHTML = `
+        <div class="queue-header">
+          <span class="queue-name">${npc.face} ${npc.name}</span>
+          <span>${npc.budget}🪙</span>
+        </div>
+        <div class="queue-meter"><span style="width:${patiencePercent}%"></span></div>
+        <div class="queue-intent">${npc.intent} • ${npc.traitLabel}</div>
+        <button data-npc="${npc.id}" class="pill">Invite</button>
+      `;
+      const btn = document.createElement("button");
+      btn.textContent = "Hire";
+      btn.addEventListener("click", () => hireStaff(candidate));
+      if (state.coins < candidate.cost) btn.disabled = true;
+      card.appendChild(btn);
+      elements.hireList.appendChild(card);
+    });
+  }
+
+  function hireStaff(candidate) {
+    if (state.coins < candidate.cost) return;
+    state.coins -= candidate.cost;
+    state.staff.push({ ...candidate, cooldown: 0 });
+    addLog(`Hired ${candidate.name} as ${candidate.role}.`);
+    renderStaff();
+    renderTopBar();
+    scheduleSave();
+  }
+
+  function switchCenterTab(button) {
+    elements.tabButtons.forEach(btn => {
+      btn.classList.toggle("active", btn === button);
+      btn.setAttribute("aria-selected", btn === button ? "true" : "false");
+    });
+    const id = button.dataset.tab;
+    document.querySelectorAll("#centerPanel .tab-content").forEach(panel => {
+      panel.classList.toggle("hidden", panel.id !== id);
+    });
+  }
+
+  function showCodex(show) {
+    elements.codexOverlay.classList.toggle("hidden", !show);
+    if (show) {
+      renderCodexPanel();
+      elements.codexSearch.value = "";
+      elements.codexSearch.focus();
+    }
+  }
+
+  function switchCodexTab(id) {
+    elements.codexTabs.forEach(tab => {
+      tab.classList.toggle("active", tab.dataset.tab === id);
+      tab.setAttribute("aria-selected", tab.dataset.tab === id ? "true" : "false");
+    });
+    elements.codexPanels.forEach(panel => {
+      panel.classList.toggle("hidden", panel.id !== id);
+    });
+    renderCodexPanel();
+  }
+
+  function renderCodexPanel() {
+    const activeTab = Array.from(elements.codexTabs).find(tab => tab.classList.contains("active"));
+    if (!activeTab) return;
+    const panelId = activeTab.dataset.tab;
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    const query = elements.codexSearch.value.toLowerCase();
+    panel.innerHTML = "";
+    if (panelId === "codex-npcs") {
+      Object.values(state.codex.npcs).forEach(npc => {
+        if (query && !npc.name.toLowerCase().includes(query)) return;
+        const entry = document.createElement("div");
+        entry.className = "codex-entry";
+        entry.innerHTML = `<h4>${npc.face} ${npc.name}</h4><p>Faction: ${npc.faction} ï¿½ Favorite: ${npc.favorite || "Unknown"}</p>`;
+        panel.appendChild(entry);
+      });
+      if (!panel.children.length) panel.textContent = "No NPCs logged yet.";
+    } else if (panelId === "codex-recipes") {
+      Object.values(state.codex.recipes).forEach(recipe => {
+        if (query && !recipe.name.toLowerCase().includes(query)) return;
+        const entry = document.createElement("div");
+        entry.className = "codex-entry";
+        entry.innerHTML = `<h4>${recipe.emoji} ${recipe.name}</h4><p>${recipe.text}</p>`;
+        panel.appendChild(entry);
+      });
+      if (!panel.children.length) panel.textContent = "No recipes unlocked.";
+    } else if (panelId === "codex-factions") {
+      Object.values(state.codex.factions).forEach(faction => {
+        if (query && !faction.name.toLowerCase().includes(query)) return;
+        const entry = document.createElement("div");
+        entry.className = "codex-entry";
+        entry.innerHTML = `<h4>${faction.name}</h4><p>${faction.description}</p>`;
+        panel.appendChild(entry);
+      });
+      if (!panel.children.length) panel.textContent = "No factions discovered.";
+    } else if (panelId === "codex-events") {
+      state.codex.events.slice().reverse().forEach(evt => {
+        if (query && !evt.name.toLowerCase().includes(query)) return;
+        const entry = document.createElement("div");
+        entry.className = "codex-entry";
+        entry.innerHTML = `<h4>${evt.name}</h4><p>${evt.description}</p>`;
+        panel.appendChild(entry);
+      });
+      if (!panel.children.length) panel.textContent = "No events recorded.";
+    } else if (panelId === "codex-upgrades") {
+      state.research.unlocked.forEach(id => {
+        const upg = getUpgrades().find(u => u.id === id);
+        if (!upg) return;
+        if (query && !upg.name.toLowerCase().includes(query)) return;
+        const entry = document.createElement("div");
+        entry.className = "codex-entry";
+        entry.innerHTML = `<h4>${upg.emoji} ${upg.name}</h4><p>${upg.description}</p>`;
+        panel.appendChild(entry);
+      });
+      if (!panel.children.length) panel.textContent = "No upgrades researched.";
+    }
+  }
+
+  function showSettings(show) {
+    elements.settingsModal.classList.toggle("hidden", !show);
+    if (show) {
+      elements.volumeSlider.value = state.settings.volume;
+      elements.textSizeSlider.value = state.settings.textSize;
+      elements.themeSelect.value = state.settings.theme;
+    }
+  }
+
+  function cycleMusic() {
+    const moods = ["Calm", "Lively", "Mellow", "Driving"];
+    const index = moods.indexOf(state.ambiance.music);
+    state.ambiance.music = moods[(index + 1) % moods.length];
+    if (state.ambiance.music === "Lively") state.ambiance.noise += 5;
+    if (state.ambiance.music === "Calm") state.ambiance.noise -= 5;
+    renderTopBar();
+  }
+
+  function cycleLight() {
+    const tones = ["Cozy", "Bright", "Shadowed"];
+    const index = tones.indexOf(state.ambiance.light);
+    state.ambiance.light = tones[(index + 1) % tones.length];
+    if (state.ambiance.light === "Bright") state.ambiance.clean += 2;
+    renderTopBar();
+  }
+
+  function performClean() {
+    addLog("You spend time cleaning the bar.");
+    advanceTime(10);
+    state.ambiance.clean = clamp(state.ambiance.clean + 18, 0, 100);
+    state.ambiance.noise = clamp(state.ambiance.noise - 10, 0, 100);
+    renderTopBar();
+    renderQueue();
+  }
+
+  function applyTheme() {
+    document.body.classList.toggle("theme-night", state.settings.theme === "night");
+  }
+
+  function recordCodexNPC(npc) {
+    if (!state.codex.npcs[npc.id]) {
+      state.codex.npcs[npc.id] = { face: npc.face, name: npc.name, faction: npc.factionName, favorite: npc.memory.favorite };
+    }
+  }
+
+  function recordCodexRecipe(recipe) {
+    if (!recipe) return;
+    if (!state.codex.recipes[recipe.id]) {
+      state.codex.recipes[recipe.id] = { name: recipe.name, emoji: recipe.emoji, text: `Requires ${recipe.requires.map(id => findIngredient(id).name).join(", ")} served ${recipe.temp} in ${GLASSWARE.find(g => g.id === recipe.glass).name}.` };
+    }
+  }
+
+  function recordCodexFaction(id) {
+    const faction = FACTIONS.find(f => f.id === id);
+    if (!faction) return;
+    if (!state.codex.factions[id]) {
+      state.codex.factions[id] = { name: faction.name, description: faction.description };
+    }
+  }
+
+  function recordCodexEvent(evt) {
+    if (!state.codex.events.find(e => e.id === evt.id)) {
+      state.codex.events.push(evt);
+    }
+  }
+
+  function addLog(text) {
+    state.log.push(`${formatTime(state.time)} ï¿½ ${text}`);
+    renderLog();
+  }
+
+  function findIngredient(id) {
+    return INGREDIENTS.find(item => item.id === id);
+  }
+
+  function findProcess(id) {
+    return PROCESS_OPTIONS.find(proc => proc.id === id);
+  }
+
+  function findMarketPrice(id) {
+    return state.daily.market[id] || findIngredient(id).cost;
+  }
+
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  function formatTime(minutes) {
+    const hrs = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${String(hrs).padStart(2, "0")}:${String(mins).padStart(2, "0")}`;
+  }
+
+  function scheduleSave(force = false) {
+    const now = Date.now();
+    if (force || now - lastSave > 4000) {
+      saveGame();
+      lastSave = now;
+    }
+  }
+
+  function saveGame() {
+    const snapshot = JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY, snapshot);
+  }
+
+  function loadGame() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      state = createDefaultState();
+      return;
+    }
+    try {
+      state = JSON.parse(raw);
+      if (!state.version || state.version < 1) {
+        state = createDefaultState();
+      }
+    } catch (_) {
+      state = createDefaultState();
+    }
+    if (!state.mix) state.mix = createEmptyMix();
+  }
+
+  window.addEventListener("beforeunload", () => saveGame());
+
+  init();
+})();
+</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
